@@ -87,7 +87,13 @@ We take the source ```stringFromMarkup``` and use esprima to translate it into a
 
 #Rewriting an arrow function expression
 
-The last piece in the puzzle is how to rewrite the arrow function into a plain function. In essense we want ```items.filter(item => item.done)``` to become -
+The last piece in the puzzle is how to rewrite the arrow function into a plain function. In essense we want -
+
+```
+items.filter(item => item.done)
+``` 
+
+To become -
 
 ```
 items.filter(function(item) { 
