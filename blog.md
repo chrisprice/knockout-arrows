@@ -87,7 +87,7 @@ We take the source ```stringFromMarkup``` and use esprima to translate it into a
 
 #Rewriting an arrow function expression
 
-The last piece in the puzzle is how to rewrite the arrow function into a plain function. In essense we want -
+The last piece in the puzzle is how to rewrite the arrow function into a plain function. The TC39 (JavaScript's standards committee) wiki defines [how arrow functions should behave](http://tc39wiki.calculist.org/es6/arrow-functions/). In essense we need -
 
 ```
 items.filter(item => item.done)
@@ -101,7 +101,9 @@ items.filter(function(item) {
 }.bind(this))
 ```
 
-The TC39 (JavaScript's standards committee) wiki defines [how arrow functions should behave](http://tc39wiki.calculist.org/es6/arrow-functions/). A basic implementation could just map the parameters as they are, add a return statement to the body expression and lexically bind this. We'll also add a ```ko.unwrap``` in there to allow us to be lazy about referencing the observable itself or the observable's value. In real life, this looks something like -
+This basic implementation just maps the parameters as they are, adds a return statement to the body expression and lexically binds this. I've also thrown in a ```ko.unwrap``` to allow us to be lazy about referencing the observable itself or the observable's value. 
+
+Coverting the above JavaScript to an AST representation looks something like -
 
 ```
 function rewriteArrowFunctionExpressionNode(node) {
@@ -151,6 +153,8 @@ function rewriteArrowFunctionExpressionNode(node) {
     };
 }
 ```
+
+It looks complicated but actually it's just quite a verbose, repetitive pattern of nested objects representing the nodes of the AST. The comments highlight the two places that the substitution takes place. You can see an [example in action here](http://chrisprice.io/knockout-arrows/example/) and the [source here](https://github.com/chrisprice/knockout-arrows/).
 
 #Conclusion
 
