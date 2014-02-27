@@ -1,0 +1,15 @@
+{
+  "name": "knockout-arrows",
+  "version": "0.0.1",
+  "description": "Use arrow function expressions in knockout bindings.",
+  "main": "knockout-arrows.js",
+  "repository": "https://github.com/chrisprice/knockout-arrows",
+  "author": "Chris Price",
+  "license": "BSD",
+  "dependencies": {
+    "esprima": "ariya/esprima#harmony",
+    "escodegen": "~1.2.0",
+    "estraverse": "~1.5.0",
+    "knockout": "~3.0.0"
+  }
+}
