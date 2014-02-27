@@ -160,5 +160,5 @@ It looks complicated but actually it's just quite a verbose, repetitive pattern 
 
 #Conclusion
 
-So whilst not the most practical end result i.e. you don't want to be loading a full-blown parser along with traversal and code generation logic, I think it does give a glimpse of the future. I look forward to the day that all of this comes for free but until then I'll happily buy a beer for the first person to turn this into a build-time grunt task.
+So whilst not the most practical end result i.e. you probably don't want to be loading a full-blown ES6 parser, tree traversal and code generation logic along with your app, I does think it does give a glimpse of the future. I look forward to the day that all of this comes for free but until then I'll happily buy a beer for the first person to turn this into a build-time grunt task.
 
