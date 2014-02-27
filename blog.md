@@ -1,6 +1,8 @@
+#Arrow functions in Knockout - knockout-arrows
+
 Recently, Knockout's original author Steve Sanderson released a plugin called [knockout-projections](https://github.com/stevesanderson/knockout-projections) which optimises the performance of the observable array methods filter and map. In this post, we'll take a peek into the future by combining this plugin with the forthcoming ES6 arrow functions to produce some very terse and highly efficient collection bindings.
 
-#filter and map
+#Array filter and map
 
 If you're not already using these methods, you're missing out. Equivalent to the C# IEnumerable methods ```where``` and ```select```, they're basically shorthand for -
 
