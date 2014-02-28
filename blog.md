@@ -4,7 +4,7 @@ Recently, Knockout's original author Steve Sanderson released a plugin called [k
 
 #Array filter and map
 
-If you're not already using these methods, you're missing out. Equivalent to the C# IEnumerable methods ```where``` and ```select```, they're basically shorthand for -
+Before I jump into arrow functions I'll quickly introduce a couple of the ES5 array methods, you can safely skip this section if you're familiar with them. However, if you're not already using these methods, you're missing out. Equivalent to the C# IEnumerable methods ```where``` and ```select```, they're basically shorthand for -
 
 ```
 // var newArr = arr.filter(conditional);
@@ -69,7 +69,7 @@ That means that *all* we need to do is use an ES6 compatible parser to parse the
 
 #Static meta-programming
 
-[Esprima](https://github.com/ariya/esprima), [estraverse](https://github.com/Constellation/estraverse) and [escodegen](https://github.com/Constellation/escodegen) are existing tools for static meta-programming, a fancy way of saying "messing around with the source code before it's executed". The tools are well documented and in this case using them is as simple as -
+[Esprima](https://github.com/ariya/esprima), [estraverse](https://github.com/Constellation/estraverse) and [escodegen](https://github.com/Constellation/escodegen) are existing tools for static meta-programming, a fancy way of saying "messing around with the source code before it's executed". The tools are well documented on their respective sites but and in this case I think the APIs are obvious enough -
 
 ```
 function rewriteBindingValue(stringFromMarkup) {
@@ -85,11 +85,11 @@ function rewriteBindingValue(stringFromMarkup) {
 }
 ```
 
-We take the source ```stringFromMarkup``` and use esprima to translate it into an AST. We then traverse this AST searching for ArrowFunctionExpression nodes. If we find one we use a helper function to rewrite the node into an ES5 compatible version and then tell estraverse to replace the node with our rewritten version. Finally, we use escodegen to generate JavaScript code corresponding to the rewritten AST.
+We take the source ```stringFromMarkup``` and use esprima to translate it into an AST. We then traverse this AST searching for ArrowFunctionExpression nodes. If we find one, we use a helper function to rewrite the node into an ES5 compatible version and then tell estraverse to replace the node with our rewritten version. Finally, we use escodegen to generate JavaScript code corresponding to the rewritten AST.
 
 #Rewriting an arrow function expression
 
-The last piece in the puzzle is how to rewrite the arrow function into a plain function. The TC39 (JavaScript's standards committee) wiki defines [how arrow functions should behave](http://tc39wiki.calculist.org/es6/arrow-functions/). In essense we need -
+The last piece in the puzzle is how to rewrite the arrow function into a plain function. Helpfully, the TC39 (JavaScript's standards committee) wiki defines [how arrow functions should behave](http://tc39wiki.calculist.org/es6/arrow-functions/). In essence we need -
 
 ```
 items.filter(item => item.done)
@@ -105,7 +105,7 @@ items.filter(function(item) {
 
 This basic implementation just maps the parameters as they are, adds a return statement to the body expression and lexically binds this. I've also thrown in a ```ko.unwrap``` to allow us to be lazy about referencing the observable itself or the observable's value. 
 
-Coverting the above JavaScript to an AST representation looks something like -
+Converting the above JavaScript to an AST representation looks something like -
 
 ```
 function rewriteArrowFunctionExpressionNode(node) {
@@ -156,7 +156,18 @@ function rewriteArrowFunctionExpressionNode(node) {
 }
 ```
 
-It looks complicated but actually it's just quite a verbose, repetitive pattern of nested objects representing the nodes of the AST. The comments highlight the two places that the substitution takes place. You can see an [example in action here](http://chrisprice.io/knockout-arrows/example/) and the [source here](https://github.com/chrisprice/knockout-arrows/).
+It looks complicated but actually it's just quite a verbose, repetitive pattern of nested objects representing the nodes of the AST. The comments highlight the two places that the substitution takes place. 
+
+You can see a really basic [example in action here](http://chrisprice.io/knockout-arrows/example/), make sure you peek at the DOM to see the arrow function in the binding. The [source is available here](https://github.com/chrisprice/knockout-arrows/) and creating your own example with browserify should be as simple as -
+
+```
+npm install chrisprice/knockout-arrows
+```
+
+```
+// add in arrow support
+require('knockout-arrows');
+```
 
 #Conclusion
 
